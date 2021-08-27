@@ -1,4 +1,18 @@
-# Telegram bot template
+# Locator
+
+Telegram bot shows latecomers or absent from work.
+
+## Usage
+
+1. You can register yourself, for this write to the bot, for example:
+   ```
+   I caught a cold. I'll take the day off today.
+   ```
+2. You can see the list of absent and latecomers. Use the following command:
+   ```
+   /list
+   ```
+   The list is updated automatically from the Google calendar.
 
 ## Build
 

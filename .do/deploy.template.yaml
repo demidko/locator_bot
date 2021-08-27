@@ -1,0 +1,12 @@
+spec:
+  name: telegram-bot
+  workers:
+    - name: backend
+      dockerfile_path: Dockerfile
+      github:
+        repo: demidko/telegram
+        branch: main
+        deploy_on_push: true
+      envs:
+        - key: TOKEN
+          type: SECRET

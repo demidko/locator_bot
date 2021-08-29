@@ -7,6 +7,7 @@ plugins {
   id("com.github.johnrengelman.shadow") version "7.0.0"
 }
 dependencies {
+  implementation("org.mapdb:mapdb:3.0.8")
   implementation("io.github.kotlin-telegram-bot.kotlin-telegram-bot:telegram:6.0.5")
   implementation("ch.qos.logback:logback-classic:1.3.0-alpha9")
   testImplementation("org.junit.jupiter:junit-jupiter:5.8.0-RC1")

@@ -10,7 +10,7 @@ Telegram bot shows latecomers or absent from work.
    ```
 2. You can see the list of absent and latecomers. Use the following command:
    ```
-   /list
+   /report
    ```
    The list is updated automatically from the Google calendar.
 

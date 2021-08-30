@@ -13,6 +13,7 @@ dependencies {
   testImplementation("org.junit.jupiter:junit-jupiter:5.8.0-RC1")
   testImplementation("com.willowtreeapps.assertk:assertk-jvm:0.24")
   testImplementation("io.mockk:mockk:1.12.0")
+  testImplementation("org.apache.commons:commons-lang3:3.12.0")
 }
 tasks.compileKotlin {
   kotlinOptions.jvmTarget = "16"

@@ -1,7 +1,7 @@
 /**
  * Здесь мы описываем все взаимодействия локатора с сотрудниками
  */
-import Employee.Dialog.WaitingForName
+import Dialog.WaitingForName
 import com.github.kotlintelegrambot.Bot
 import com.github.kotlintelegrambot.entities.Message
 
@@ -24,14 +24,15 @@ fun Bot.waitForName(m: Message, storage: Storage) {
  * @param m сообщение содержит статус сотрудника
  */
 fun Bot.saveStatus(m: Message, storage: Storage) {
-  val employeeId = m.authorId ?: return
+  val telegramId = m.authorId ?: return
   val status = m.text ?: return
-  val needForName = storage.saveStatus(employeeId, status)
+  val employee = storage.saveStatus(telegramId, status)
   sendMessage(m.chatId, "Твой новый статус успешно сохранён.", replyToMessageId = m.messageId)
-  if (needForName) {
+  if (employee.name.isEmpty()) {
     waitForName(m, storage)
+  } else {
+    notifyAll(storage, telegramId, employee)
   }
-
 }
 
 /**
@@ -48,15 +49,12 @@ fun Bot.clearStatus(m: Message, storage: Storage) {
  * Продолжить диалог с нового сообщения пользователя
  */
 fun Bot.resumeDialog(m: Message, storage: Storage) {
-  val employee = m.authorId ?: return
-  when (storage[employee]?.dialog) {
-    /**
-     * Если мы до этого ждали имя, то сохраняем его
-     */
+  val telegramId = m.authorId ?: return
+  println(m)
+  val employee = storage[telegramId]
+  println(employee == null)
+  when (employee?.dialog) {
     WaitingForName -> saveName(m, storage)
-    /**
-     * По умолчанию, считаем что пользователь отправил нам статус
-     */
     else -> saveStatus(m, storage)
   }
 }
@@ -74,16 +72,20 @@ fun Bot.sendReport(m: Message, storage: Storage, calendar: GoogleCalendar) {
  * @param m сообщение содержит имя сотрудника
  */
 fun Bot.saveName(m: Message, storage: Storage) {
-  val employeeId = m.authorId ?: return
+  val telegramId = m.authorId ?: return
   val name = m.text ?: return
-  storage.saveName(employeeId, name)
+  val employee = storage.saveName(telegramId, name)
   sendMessage(m.chatId, "Теперь коллеги будут знать что ты $name", replyToMessageId = m.messageId)
+  if (employee.hasActualStatus) {
+    notifyAll(storage, telegramId, employee)
+  }
 }
 
 /**
  * Сообщить всем сотрудникам об обновлении статуса
- * @param employees список все
  */
-fun Bot.notifyAll(storage: Storage, about: Employee) {
-
+fun Bot.notifyAll(storage: Storage, employeeId: TelegramId, employee: Employee) {
+  storage.keys
+    .filter { it != employeeId }
+    .forEach { sendMessage(it.chatId, employee.toString()) }
 }

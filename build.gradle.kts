@@ -10,6 +10,7 @@ dependencies {
   implementation("org.mapdb:mapdb:3.0.8")
   implementation("io.github.kotlin-telegram-bot.kotlin-telegram-bot:telegram:6.0.5")
   implementation("ch.qos.logback:logback-classic:1.3.0-alpha9")
+  implementation("org.mnode.ical4j:ical4j:3.1.0")
   testImplementation("org.junit.jupiter:junit-jupiter:5.8.0-RC1")
   testImplementation("com.willowtreeapps.assertk:assertk-jvm:0.24")
   testImplementation("io.mockk:mockk:1.12.0")

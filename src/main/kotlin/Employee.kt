@@ -11,14 +11,14 @@ import java.time.LocalDate
 data class Employee(
   val name: String = "",
   val status: String = "",
-  val dialog: Dialog = Unknown,
-  val date: LocalDate = today()
+  val date: LocalDate = vladivostokToday(),
+  val dialog: Dialog = Unknown
 ) {
 
   /**
    * Есть ли у сотрудника актуальный статус на сегодня?
    */
-  val hasActualStatus get() = today() <= date && name.isNotEmpty() && status.isNotEmpty()
+  val hasActualStatus get() = vladivostokToday() <= date && name.isNotEmpty() && status.isNotEmpty()
 
   /**
    * Читаемый вывод статуса сотрудника в виде строки

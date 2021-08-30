@@ -1,31 +1,42 @@
 # Locator
 
-Telegram bot shows latecomers or absent from work.
+Телеграм бот подскажет кто из сотрудников задерживается или не работает сегодня. Используется
+русский язык и время по Владивостоку.
 
-## Usage
+## Использование
 
-1. You can register yourself, for this write to the bot, for example:
-   ```
-   I caught a cold. I'll take the day off today.
-   ```
-2. You can see the list of absent and latecomers. Use the following command:
-   ```
-   /report
-   ```
-   The list is updated automatically from the Google calendar.
+Просто отправьте соответствующему боту сообщение с вашим статусом на сегодня.  
+Статус автоматически придёт в уведомления всем коллегам.
 
-## Build
+1. Чтобы получить расширенный отчет по всем статусам, используйте команду `/start`.
+2. Чтобы изменить отображение вашего имени, используйте команду `/name`.
+3. Чтобы удалить ваши данные из отчета, используйте команду `/clear`
+
+## Сборка и запуск
 
 ```sh
 ./gradlew clean build
 ```
 
-Self-executable jar will be located in `build/libs`. To start long polling execute command
+Приложение будет расположено в директории `build/libs`. Для запуска используйте переменные среды
+окружения:
 
 ```sh
-TOKEN=... java -jar build/libs/*-all.jar
+TELEGRAM_TOKEN=... DATABASE_PATH=opt/employees java -jar build/libs/*-all.jar
+
 ```
 
-## Deploy
+## Запуск Docker контейнера
+
+В этом случае предварительных действий не потребуется:
+
+```sh
+docker run --env TELEGRAM_TOKEN=... --env  DATABASE_PATH=opt/employees demidko/locator
+```
+
+Бот поддерживает интеграцию с Google календарями, для этого при запуске укажите список адресов через
+запятую в переменной `CALENDAR_URLS`.
+
+## Разворачивание в облаке
 
 [![Deploy to DigitalOcean](https://www.deploytodo.com/do-btn-blue-ghost.svg)](https://cloud.digitalocean.com/apps/new?repo=https://github.com/YOUR/REPO/tree/main)

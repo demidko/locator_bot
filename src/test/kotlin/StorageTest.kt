@@ -20,7 +20,7 @@ class StorageTest {
 
     fun saveEmployeesToDb() {
       fileDB(dbName).fileMmapEnableIfSupported().make().use {
-        val storage = it.openStorage(storageName)
+        val storage = it.openEmployeesStorage(storageName)
         for ((id, employee) in originalEmployees) {
           storage[id] = employee
         }
@@ -29,7 +29,7 @@ class StorageTest {
 
     fun restoreEmployeesFromDb() {
       fileDB(dbName).fileMmapEnableIfSupported().make().use {
-        val storage = it.openStorage(storageName)
+        val storage = it.openEmployeesStorage(storageName)
         for ((id, originalEmployee) in originalEmployees) {
           assertThat(storage[id]).isEqualTo(originalEmployee)
         }
@@ -50,7 +50,7 @@ class StorageTest {
     Employee(
       random(nextInt(0, 120)),
       random(nextInt(0, 120)),
-      arrayOf(Unknown, WaitingForName)[nextInt(0, 2)],
-      ofEpochDay(nextLong(0, now().toEpochDay()))
+      ofEpochDay(nextLong(0, now().toEpochDay())),
+      arrayOf(Unknown, WaitingForName)[nextInt(0, 2)]
     )
 }

@@ -2,8 +2,11 @@ import Dialog.valueOf
 import org.mapdb.DataInput2
 import org.mapdb.DataOutput2
 import org.mapdb.Serializer
-import java.time.LocalDate
+import java.time.LocalDate.ofEpochDay
 
+/**
+ * Класс для сериализации в MapDB
+ */
 object EmployeeSerializer : Serializer<Employee> {
 
   override fun serialize(out: DataOutput2, value: Employee) {
@@ -17,7 +20,7 @@ object EmployeeSerializer : Serializer<Employee> {
     val name = input.readUTF()
     val status = input.readUTF()
     val dialog = valueOf(input.readUTF())
-    val date = LocalDate.ofEpochDay(input.readLong())
-    return Employee(name, status, dialog, date)
+    val date = ofEpochDay(input.readLong())
+    return Employee(name, status, date, dialog)
   }
 }

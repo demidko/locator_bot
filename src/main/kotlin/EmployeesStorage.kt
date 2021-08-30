@@ -1,35 +1,34 @@
 /**
  * Хранилище данных для сотрудников
  */
-
 import Dialog.Unknown
 import Dialog.WaitingForName
 import org.mapdb.DB
+import org.mapdb.HTreeMap
 import org.mapdb.Serializer.LONG
-import java.util.concurrent.ConcurrentMap
 
 /**
  * Хранилище данных о сотрудниках в Telegram. Свои данные в нем может изменить любой сотрудник
  */
-typealias Storage = ConcurrentMap<TelegramId, Employee>
+typealias EmployeesStorage = HTreeMap<TelegramId, Employee>
 
 /**
- * Открыть хранилище в базе данных
+ * Открыть хранилище (id -> сотрудник) в базе данных
  */
 @Suppress("UNCHECKED_CAST")
-fun DB.openStorage(name: String) = hashMap(name, LONG, EmployeeSerializer).createOrOpen() as Storage
+fun DB.openEmployeesStorage(name: String) = hashMap(name, LONG, EmployeeSerializer).createOrOpen() as EmployeesStorage
 
 /**
  * Подождать пока сотрудник внесет свое имя
  */
-fun Storage.waitForName(id: TelegramId) {
+fun EmployeesStorage.waitForName(id: TelegramId) {
   this[id] = this[id]?.copy(dialog = WaitingForName) ?: Employee(dialog = WaitingForName)
 }
 
 /**
  * Внести новое имя сотрудника
  */
-fun Storage.saveName(id: TelegramId, name: String): Employee {
+fun EmployeesStorage.saveName(id: TelegramId, name: String): Employee {
   val employee = this[id]?.copy(name = name, dialog = Unknown) ?: Employee(name)
   this[id] = employee
   return employee
@@ -39,7 +38,7 @@ fun Storage.saveName(id: TelegramId, name: String): Employee {
  * Внести новый статус сотрудника
  * @return все имеющиеся данные о сотруднике
  */
-fun Storage.saveStatus(id: TelegramId, status: String): Employee {
+fun EmployeesStorage.saveStatus(id: TelegramId, status: String): Employee {
   val employee = this[id]?.copy(status = status) ?: Employee(status = status)
   this[id] = employee
   return employee
@@ -48,11 +47,12 @@ fun Storage.saveStatus(id: TelegramId, status: String): Employee {
 /**
  * Очистить статус сотрудника
  */
-fun Storage.clearStatus(id: TelegramId) {
+fun EmployeesStorage.clearStatus(id: TelegramId) {
   this[id] = this[id]?.copy(status = "") ?: Employee(status = "")
 }
 
 /**
  * @return актуальный отчет о статусе всех сотрудников
  */
-fun Storage.statusReport() = values.filter(Employee::hasActualStatus).joinToString(separator = "\n")
+fun EmployeesStorage.report() =
+  values.filterNotNull().filter(Employee::hasActualStatus).joinToString(separator = "\n")

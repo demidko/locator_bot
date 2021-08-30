@@ -31,7 +31,7 @@ TELEGRAM_TOKEN=... DATABASE_PATH=opt/employees java -jar build/libs/*-all.jar
 В этом случае предварительных действий не потребуется:
 
 ```sh
-docker run --env TELEGRAM_TOKEN=... --env  DATABASE_PATH=opt/employees demidko/locator
+docker run --env TELEGRAM_TOKEN=... --env DATABASE_PATH=opt/employees demidko/locator
 ```
 
 Бот поддерживает интеграцию с Google календарями, для этого при запуске укажите список адресов через

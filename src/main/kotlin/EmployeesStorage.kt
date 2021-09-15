@@ -39,7 +39,7 @@ fun EmployeesStorage.saveName(id: TelegramId, name: String): Employee {
  * @return все имеющиеся данные о сотруднике
  */
 fun EmployeesStorage.saveStatus(id: TelegramId, status: String): Employee {
-  val employee = this[id]?.copy(status = status) ?: Employee(status = status)
+  val employee = this[id]?.copy(status = status, date = vladivostokToday()) ?: Employee(status = status)
   this[id] = employee
   return employee
 }

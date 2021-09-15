@@ -3,7 +3,7 @@
 Телеграм бот подскажет кто из сотрудников задерживается или не работает сегодня. Используется
 русский язык и время по Владивостоку.
 
-## Использование
+## Команды
 
 Просто отправьте соответствующему боту сообщение с вашим статусом на сегодня.  
 Статус автоматически придёт в уведомления всем коллегам.
@@ -12,7 +12,22 @@
 2. Чтобы изменить отображение вашего имени, используйте команду `/name`.
 3. Чтобы удалить ваши данные из отчета, используйте команду `/clear`
 
-## Сборка и запуск
+## Как запускать?
+
+Используйте Docker. В этом случае предварительных действий не потребуется:
+
+```sh
+docker run --env TELEGRAM_TOKEN=... --env DATABASE_PATH=opt/employees demidko/locator
+```
+
+Бот поддерживает интеграцию с Google календарями, для этого при запуске укажите список адресов через
+запятую в переменной `CALENDAR_URLS`.
+
+## Как развернуть в облаке?
+
+[![Deploy to DigitalOcean](https://www.deploytodo.com/do-btn-blue-ghost.svg)](https://cloud.digitalocean.com/apps/new?repo=https://github.com/demidko/locator/tree/main)
+
+## Как собирать и запускать вручную?
 
 ```sh
 ./gradlew clean build
@@ -25,18 +40,3 @@
 TELEGRAM_TOKEN=... DATABASE_PATH=opt/employees java -jar build/libs/*-all.jar
 
 ```
-
-## Запуск Docker контейнера
-
-В этом случае предварительных действий не потребуется:
-
-```sh
-docker run --env TELEGRAM_TOKEN=... --env DATABASE_PATH=opt/employees demidko/locator
-```
-
-Бот поддерживает интеграцию с Google календарями, для этого при запуске укажите список адресов через
-запятую в переменной `CALENDAR_URLS`.
-
-## Разворачивание в облаке
-
-[![Deploy to DigitalOcean](https://www.deploytodo.com/do-btn-blue-ghost.svg)](https://cloud.digitalocean.com/apps/new?repo=https://github.com/YOUR/REPO/tree/main)

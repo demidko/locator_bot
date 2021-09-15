@@ -24,15 +24,19 @@ fun main() {
     token = TELEGRAM_TOKEN
     dispatch {
       command("start") {
+        log.info("${message.from} - ${this.message.text}")
         bot.sendReport(message, storage, calendar)
       }
       command("name") {
+        log.info("${message.from} - ${this.message.text}")
         bot.waitForName(message, storage)
       }
       command("clear") {
+        log.info("${message.from} - ${this.message.text}")
         bot.clearStatus(message, storage)
       }
       message(Text) {
+        log.info("${message.from} - ${this.message.text}")
         bot.resumeDialog(message, storage)
       }
     }
